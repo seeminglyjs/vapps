@@ -1,0 +1,90 @@
+{
+  "project_info": {
+    "project_number": "532584395775",
+    "project_id": "test-1563438049939",
+    "storage_bucket": "test-1563438049939.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:532584395775:android:ed294ab8b480517c8c6dca",
+        "android_client_info": {
+          "package_name": "com.example.vapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "532584395775-nru0jvballfrsurhtiat7jgpbkhr33nl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vapp",
+            "certificate_hash": "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+          }
+        },
+        {
+          "client_id": "532584395775-e0mpp41r2h2u9hfu3t85p9sg4lkg6a6k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpasJLQ6UIcin_Zj0dJLg5Y4NHIp3s8qA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "532584395775-e0mpp41r2h2u9hfu3t85p9sg4lkg6a6k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "532584395775-5rq62td8bt1fi7v30eopnt42iaq30hql.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vapp.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:532584395775:android:767aba02e8926eda8c6dca",
+        "android_client_info": {
+          "package_name": "com.example.vapps"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "532584395775-e0mpp41r2h2u9hfu3t85p9sg4lkg6a6k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCpasJLQ6UIcin_Zj0dJLg5Y4NHIp3s8qA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "532584395775-e0mpp41r2h2u9hfu3t85p9sg4lkg6a6k.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "532584395775-5rq62td8bt1fi7v30eopnt42iaq30hql.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.vapp.RunnerTests"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
