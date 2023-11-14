@@ -97,10 +97,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   );
                 } else {
                   return ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       // 로그아웃 로직
-                      AuthService.logout();
-                      // 현재 화면을 갱신하여 버튼이 변경되도록 함
+                      await AuthService.logout();
+                      // 로그아웃 후에 사용자 정보를 다시 로드
                       _loadCurrentUser();
                     },
                     child: const Text('로그아웃'),
