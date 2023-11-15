@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:vapps/services/auth/auth_service.dart';
-import 'package:vapps/views/join.dart';
+import 'package:vapps/screens/join_screen.dart';
 
-class Login extends StatelessWidget {
-  Login({super.key});
+class SignIn extends StatelessWidget {
+  SignIn({super.key});
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final AuthService authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -32,9 +33,8 @@ class Login extends StatelessWidget {
               children: <Widget>[
                 ElevatedButton(
                   onPressed: () {
-                    AuthService.login(_emailController.text,
+                    authService.signIn(_emailController.text,
                         _passwordController.text, context);
-                    print('로그인 버튼이 클릭되었습니다.');
                   },
                   child: const Text('로그인'),
                 ),

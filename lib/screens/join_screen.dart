@@ -6,6 +6,7 @@ class Join extends StatelessWidget {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final AuthService authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +30,8 @@ class Join extends StatelessWidget {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                AuthService.join(
+                authService.join(
                     emailController.text, passwordController.text, context);
-                print('회원가입 버튼이 클릭되었습니다.');
               },
               child: const Text('회원가입2'),
             ),
