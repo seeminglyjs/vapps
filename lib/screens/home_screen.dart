@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:vapps/main.dart';
 import 'package:vapps/screens/signin_screen.dart';
 import 'package:vapps/services/auth/auth_service.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -13,12 +15,31 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> {
   Future<User?>? currentUser;
-  AuthService authService = AuthService();
+  AuthService authService = AuthService(); //firebase 인증관련 객체
+
+  // 변수를 선언하여 서버로부터 받아온 데이터를 저장합니다.
+  Map<String, dynamic> data = {};
+
+  // 서버에서 데이터를 가져오는 함수
+  Future<void> fetchData() async {
+    var response = await http.get(Uri.parse('http://10.0.2.2:9937/test/dto'));
+    if (response.statusCode == 200) {
+      // 성공적으로 데이터를 가져온 경우
+      setState(() {
+        data = jsonDecode(utf8.decode(response.bodyBytes));
+      });
+    } else {
+      // 데이터를 가져오지 못한 경우에 대한 처리를 여기에 추가할 수 있습니다.
+      log.i('Failed to load data');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
     _loadCurrentUser();
+    // 위젯이 생성될 때 데이터를 가져오도록 설정
+    fetchData();
   }
 
   Future<void> _loadCurrentUser() async {
@@ -87,7 +108,11 @@ class _HomeState extends State<Home> {
           ),
         ],
       ),
-      body: const Column(),
+      body: Column(children: <Widget>[
+        // 데이터를 표시하는 예제
+        Text('Name: ${data['name']}'),
+        Text('Age: ${data['age']}'),
+      ]),
     );
   }
 }

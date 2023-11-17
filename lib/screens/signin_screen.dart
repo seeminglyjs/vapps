@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:vapps/services/auth/auth_service.dart';
 import 'package:vapps/screens/join_screen.dart';
+import 'package:vapps/services/auth/google_auth_service.dart';
 
 class SignIn extends StatelessWidget {
   SignIn({super.key});
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final AuthService authService = AuthService();
+  final GoogleAuthService googleAuthService = GoogleAuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +53,18 @@ class SignIn extends StatelessWidget {
                 ),
               ],
             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬
+              children: <Widget>[
+                ElevatedButton(
+                  onPressed: () {
+                    googleAuthService.signInWithGoogle();
+                  },
+                  child: const Text('구글로그인'),
+                ),
+                const SizedBox(width: 20), // 간격 조절
+              ],
+            )
           ],
         ),
       ),
