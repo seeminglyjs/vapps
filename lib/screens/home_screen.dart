@@ -34,6 +34,19 @@ class _HomeState extends State<Home> {
     }
   }
 
+  Future<void> authCheck() async {
+    // HTTP 헤더에 토큰을 추가
+    User? user = await currentUser;
+    String? token = await user!.getIdToken(); // await를 추가하여 Future가 완료될 때까지 대기
+    log.i(token);
+    Map<String, String> headers = {'Authorization': 'Bearer $token'};
+    var response = await http.get(
+        Uri.parse('http://10.0.2.2:9937/test/auth/check'),
+        headers: headers);
+    data = jsonDecode(utf8.decode(response.bodyBytes));
+    log.i(response.body);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -50,6 +63,7 @@ class _HomeState extends State<Home> {
     User? user = await currentUser;
     if (user != null) {
       log.i('현재 로그인 유저 : ${user.email}');
+      authCheck();
     } else {
       log.i('현재 사용자는 없습니다.');
     }

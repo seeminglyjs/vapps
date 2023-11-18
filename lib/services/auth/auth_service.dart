@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:vapps/main.dart';
 import 'package:vapps/screens/signin_screen.dart';
 
@@ -119,4 +120,42 @@ class AuthService {
       return null;
     }
   }
+
+  // *************************** Google Auth [START] *****************************************
+
+  Future<UserCredential?> signInWithGoogle() async {
+    // Trigger the authentication flow
+    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    // Obtain the auth details from the request
+    final GoogleSignInAuthentication? googleAuth =
+        await googleUser?.authentication;
+
+    // Create a new credential
+    final credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    try {
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+      log.i('User ID: ${userCredential.user?.uid}');
+      log.i('Display Name: ${userCredential.user?.displayName}');
+      log.i('Email: ${userCredential.user?.email}');
+      IdTokenResult? idTokenResult =
+          await userCredential.user?.getIdTokenResult();
+
+      log.i('token: ${idTokenResult?.token}');
+      log.i('token: ${idTokenResult?.expirationTime}');
+      return userCredential;
+    } catch (e) {
+      log.e('Error during Google Sign In: $e');
+    }
+
+    // Once signed in, return the UserCredential
+    return null;
+  }
+
+  // *************************** Google Auth [END] *****************************************
 }
