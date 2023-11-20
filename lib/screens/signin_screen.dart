@@ -1,12 +1,8 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vapps/services/auth/auth_service.dart';
-import 'package:vapps/screens/join_screen.dart';
 
 class SignIn extends StatelessWidget {
   SignIn({super.key});
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
   final AuthService authService = AuthService();
 
   @override
@@ -19,47 +15,22 @@ class SignIn extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextField(
-              controller: _emailController,
-              decoration: const InputDecoration(labelText: 'Email'),
-            ),
-            TextField(
-              controller: _passwordController,
-              decoration: const InputDecoration(labelText: 'Password'),
-              obscureText: true,
-            ),
-            const SizedBox(height: 20),
             Row(
               mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬
               children: <Widget>[
-                ElevatedButton(
-                  onPressed: () {
-                    authService.signIn(_emailController.text,
-                        _passwordController.text, context);
-                  },
-                  child: const Text('로그인'),
-                ),
-                const SizedBox(width: 20), // 간격 조절
-                ElevatedButton(
-                  onPressed: () {
-                    // "회원가입" 버튼을 누르면 Join 페이지로 이동
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Join()),
-                    );
-                  },
-                  child: const Text('회원가입'),
-                ),
-              ],
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center, // 가운데 정렬
-              children: <Widget>[
-                ElevatedButton(
+                ElevatedButton.icon(
                   onPressed: () async {
                     authService.signInWithGoogle();
                   },
-                  child: const Text('구글로그인'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Colors.blue, // 텍스트 색상을 흰색으로 설정
+                  ),
+                  icon: Image.asset(
+                    'assets/logo/google_logo.jpg', // Google 로고 이미지
+                    height: 24.0, // 이미지 높이 조절
+                  ),
+                  label: const Text('구글 로그인'), // 버튼 텍스트
                 ),
                 const SizedBox(width: 20), // 간격 조절
               ],
