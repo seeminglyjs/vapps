@@ -1,10 +1,15 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:vapps/enums/google/google_res_code.dart';
 import 'package:vapps/enums/social_type.dart';
+import 'package:vapps/enums/user_state.dart';
 import 'package:vapps/main.dart';
+import 'package:vapps/models/current_user_model.dart';
+import 'package:vapps/models/google/google_login_res_model.dart';
 import 'package:vapps/models/register_user_req_model.dart';
 import 'package:vapps/models/register_user_res_model.dart';
 import 'package:vapps/screens/signin_screen.dart';
@@ -113,20 +118,27 @@ class AuthService {
   /*
    * 현재 유저 정보를 가져오는 함수
    */
-  Future<User?> getCurrentUser() async {
+  Future<CurrentUser> getCurrentUser() async {
+    var currentUserRes = CurrentUser();
     try {
       User? user = await FirebaseAuth.instance.authStateChanges().first;
-      if (user == null) return null;
+      if (user == null) return currentUserRes;
       if (user.emailVerified == true) {
-        return user;
+        currentUserRes.setUserState = UserState.signin;
+        currentUserRes.setMessage = "success";
+        currentUserRes.setUser = user;
+        return currentUserRes;
       } else {
         final userEmail = user.email;
-        log.w("$userEmail not emailVerified");
-        return null;
+        var errorMessage = "$userEmail not emailVerified";
+        currentUserRes.setMessage = errorMessage;
+        return currentUserRes;
       }
     } catch (e) {
+      var errorMessage = 'Error getting current user: $e';
       log.e('Error getting current user: $e');
-      return null;
+      currentUserRes.setMessage = errorMessage;
+      return currentUserRes;
     }
   }
 
@@ -164,9 +176,12 @@ class AuthService {
 
   // *************************** Google Auth [START] *****************************************
 
-  Future<UserCredential?> signInWithGoogle() async {
+  Future<GoogleLoginResModel> signInWithGoogle() async {
     // Trigger the authentication flow
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+    //default 리턴 객체 생성
+    var googleSignRes = GoogleLoginResModel(userCredential: null);
 
     // Obtain the auth details from the request
     final GoogleSignInAuthentication? googleAuth =
@@ -199,19 +214,23 @@ class AuthService {
           log.i('message : ${registerUserResponse.message}');
         }
       }
-
       log.i(
           'User ID: ${user?.uid}  Display Name: ${user?.displayName}  Email: ${user?.email}');
 
       log.i('token: ${idTokenResult?.token}'
           '  token expirationTime: ${idTokenResult?.expirationTime}');
-      return userCredential;
+      return googleSignRes = GoogleLoginResModel(
+          code: GoogleResCode.success,
+          message: "success",
+          userCredential: userCredential);
     } catch (e) {
-      log.e('Error during Google Sign In: $e');
+      var errorMessage = 'Error during Google Sign In: $e';
+      log.e(errorMessage);
+      googleSignRes.setMessage(errorMessage);
     }
 
     // Once signed in, return the UserCredential
-    return null;
+    return googleSignRes;
   }
 
   // *************************** Google Auth [END] *****************************************

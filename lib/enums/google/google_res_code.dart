@@ -1,0 +1,4 @@
+enum GoogleResCode {
+  success,
+  fail,
+}

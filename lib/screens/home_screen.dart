@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:vapps/enums/user_state.dart';
 import 'package:vapps/main.dart';
+import 'package:vapps/models/current_user_model.dart';
 import 'package:vapps/screens/signin_screen.dart';
 import 'package:vapps/services/auth/auth_service.dart';
 import 'package:http/http.dart' as http;
@@ -14,7 +16,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  Future<User?>? currentUser;
+  Future<CurrentUser>? currentUserFuture;
+  User? userInfo;
   AuthService authService = AuthService(); //firebase 인증관련 객체
 
   // 변수를 선언하여 서버로부터 받아온 데이터를 저장합니다.
@@ -34,19 +37,6 @@ class _HomeState extends State<Home> {
     }
   }
 
-  // Future<void> authCheck() async {
-  //   // HTTP 헤더에 토큰을 추가
-  //   User? user = await currentUser;
-  //   String? token = await user!.getIdToken(); // await를 추가하여 Future가 완료될 때까지 대기
-  //   log.i(token);
-  //   Map<String, String> headers = {'Authorization': 'Bearer $token'};
-  //   var response = await http.get(
-  //       Uri.parse('http://10.0.2.2:9937/test/auth/check'),
-  //       headers: headers);
-  //   data = jsonDecode(utf8.decode(response.bodyBytes));
-  //   log.i(response.body);
-  // }
-
   @override
   void initState() {
     super.initState();
@@ -57,12 +47,13 @@ class _HomeState extends State<Home> {
 
   Future<void> _loadCurrentUser() async {
     setState(() {
-      currentUser = authService.getCurrentUser();
+      currentUserFuture = authService.getCurrentUser();
     });
 
-    User? user = await currentUser;
-    if (user != null) {
-      log.i('현재 로그인 유저 : ${user.email}');
+    CurrentUser? currentUser = await currentUserFuture;
+    if (currentUser != null && currentUser.getUserState == UserState.signin) {
+      userInfo = currentUser.getUser;
+      log.i('현재 로그인 유저 : ${userInfo?.email}');
       // authCheck();
     } else {
       log.i('현재 사용자는 없습니다.');
@@ -81,8 +72,8 @@ class _HomeState extends State<Home> {
         ),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         actions: [
-          FutureBuilder<User?>(
-            future: currentUser,
+          FutureBuilder<CurrentUser?>(
+            future: currentUserFuture,
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return IconButton(
@@ -97,6 +88,18 @@ class _HomeState extends State<Home> {
                   },
                 );
               } else if (snapshot.data == null) {
+                return IconButton(
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => SignIn(),
+                      ),
+                    );
+                  },
+                  icon: const Icon(Icons.login),
+                );
+              } else if (snapshot.data != null &&
+                  snapshot.data?.getUserState != UserState.signin) {
                 return IconButton(
                   onPressed: () {
                     Navigator.of(context).push(
