@@ -124,20 +124,20 @@ class AuthService {
       User? user = await FirebaseAuth.instance.authStateChanges().first;
       if (user == null) return currentUserRes;
       if (user.emailVerified == true) {
-        currentUserRes.setUserState = UserState.signin;
-        currentUserRes.setMessage = "success";
-        currentUserRes.setUser = user;
+        currentUserRes.userState = UserState.signin;
+        currentUserRes.message = "success";
+        currentUserRes.user = user;
         return currentUserRes;
       } else {
         final userEmail = user.email;
         var errorMessage = "$userEmail not emailVerified";
-        currentUserRes.setMessage = errorMessage;
+        currentUserRes.message = errorMessage;
         return currentUserRes;
       }
     } catch (e) {
       var errorMessage = 'Error getting current user: $e';
       log.e('Error getting current user: $e');
-      currentUserRes.setMessage = errorMessage;
+      currentUserRes.message = errorMessage;
       return currentUserRes;
     }
   }
@@ -226,7 +226,7 @@ class AuthService {
     } catch (e) {
       var errorMessage = 'Error during Google Sign In: $e';
       log.e(errorMessage);
-      googleSignRes.setMessage(errorMessage);
+      googleSignRes.message = errorMessage;
     }
 
     // Once signed in, return the UserCredential

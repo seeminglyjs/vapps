@@ -51,9 +51,10 @@ class _HomeState extends State<Home> {
     });
 
     CurrentUser? currentUser = await currentUserFuture;
-    if (currentUser != null && currentUser.getUserState == UserState.signin) {
-      userInfo = currentUser.getUser;
+    if (currentUser != null && currentUser.userState == UserState.signin) {
+      userInfo = currentUser.user;
       log.i('현재 로그인 유저 : ${userInfo?.email}');
+      log.i('현재 로그인 유저 이메일 인증여부: ${userInfo?.emailVerified}');
       // authCheck();
     } else {
       log.i('현재 사용자는 없습니다.');
@@ -99,7 +100,7 @@ class _HomeState extends State<Home> {
                   icon: const Icon(Icons.login),
                 );
               } else if (snapshot.data != null &&
-                  snapshot.data?.getUserState != UserState.signin) {
+                  snapshot.data?.userState != UserState.signin) {
                 return IconButton(
                   onPressed: () {
                     Navigator.of(context).push(

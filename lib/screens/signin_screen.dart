@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:vapps/enums/google/google_res_code.dart';
+import 'package:vapps/models/google/google_login_res_model.dart';
+import 'package:vapps/screens/home_screen.dart';
 import 'package:vapps/services/auth/auth_service.dart';
 
 class SignIn extends StatelessWidget {
@@ -20,7 +23,18 @@ class SignIn extends StatelessWidget {
               children: <Widget>[
                 ElevatedButton.icon(
                   onPressed: () async {
-                    authService.signInWithGoogle();
+                    GoogleLoginResModel res =
+                        await authService.signInWithGoogle();
+                    if (res.code == GoogleResCode.success) {
+                      if (context.mounted) {
+                        //컨텍스트가 마운트 되었으면
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => const Home(),
+                          ),
+                        );
+                      }
+                    }
                   },
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,

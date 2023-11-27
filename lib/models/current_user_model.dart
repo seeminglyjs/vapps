@@ -7,17 +7,6 @@ class CurrentUser {
   late UserState userState;
   late User? user;
   late String message;
-  get getUserState => userState;
-
-  set setUserState(userState) => this.userState = userState;
-
-  get getUser => user;
-
-  set setUser(user) => this.user = user;
-
-  get getMessage => message;
-
-  set setMessage(message) => this.message = message;
 
   CurrentUser({
     this.userState = UserState.none,

@@ -13,19 +13,4 @@ class GoogleLoginResModel {
         "An unexpected error occurred, resulting in the return of a default object.",
     required this.userCredential,
   });
-
-  // Setter method for 'code'
-  void setCode(GoogleResCode newCode) {
-    code = newCode;
-  }
-
-  // Setter method for 'message'
-  void setMessage(String newMessage) {
-    message = newMessage;
-  }
-
-  // Setter method for 'userCredential'
-  void setUserCredential(UserCredential newUserCredential) {
-    userCredential = newUserCredential;
-  }
 }
