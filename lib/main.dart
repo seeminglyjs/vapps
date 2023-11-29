@@ -5,9 +5,11 @@ import 'package:vapps/screens/home_screen.dart';
 import 'package:vapps/screens/join_screen.dart';
 import 'package:vapps/screens/signin_screen.dart';
 import 'package:logger/logger.dart';
+import 'package:vapps/services/auth/auth_service.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -17,6 +19,8 @@ Future<void> main() async {
 var log = Logger(
   printer: PrettyPrinter(),
 );
+
+AuthService authService = AuthService(); //firebase 인증관련 객체
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
