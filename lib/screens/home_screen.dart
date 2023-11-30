@@ -207,6 +207,28 @@ class _HomeState extends State<Home> {
                   initialSettings: settings,
                   pullToRefreshController: pullToRefreshController,
                   onWebViewCreated: (controller) {
+                    // register a JavaScript handler with name "myHandlerName"
+                    controller.addJavaScriptHandler(
+                        handlerName: 'myHandlerName',
+                        callback: (json) {
+                          // print arguments coming from the JavaScript side!
+                          print(
+                              "===================================================$json");
+
+                          // Display data on the HTML page
+                          controller.evaluateJavascript(source: """
+                                  document.getElementById('result').innerText = JSON.stringify($json);
+                          """);
+                        });
+
+                    controller.addJavaScriptHandler(
+                      handlerName: 'handler2',
+                      callback: (args) {
+                        print("Handler 2: $args");
+                        return {'result': 'handler2_result'};
+                      },
+                    );
+
                     webViewController = controller;
                   },
                   onLoadStart: (controller, url) {
