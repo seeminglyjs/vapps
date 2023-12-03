@@ -6,6 +6,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:vapps/enums/user_state.dart';
 import 'package:vapps/main.dart';
 import 'package:vapps/models/current_user_model.dart';
+import 'package:vapps/screens/blog/blog_list_screen.dart';
 import 'package:vapps/screens/signin_screen.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -121,12 +122,44 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
-          leading: const Icon(
-            Icons.favorite,
-            color: Colors.pink,
-            size: 24.0,
-            semanticLabel: 'Text to announce in accessibility modes',
+          leading: GestureDetector(
+            onTap: () {
+              // 아이콘 클릭 처리
+              // 여기에 로직 추가
+            },
+            child: const Icon(
+              Icons.favorite,
+              color: Colors.pink,
+              size: 24.0,
+            ),
           ),
+          title: Row(
+            children: [
+              Expanded(
+                child: GestureDetector(
+                  onTap: () {
+                    // 텍스트 클릭 처리
+                    // 여기에 로직 추가
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const BlogListScreen()),
+                    );
+                  },
+                  child: const Text(
+                    'Blog',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
+                    ),
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          // 나머지 AppBar 코드...
+          // 나머지 AppBar 코드...
           backgroundColor: Theme.of(context).colorScheme.inversePrimary,
           actions: [
             FutureBuilder<CurrentUser?>(
